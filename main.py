@@ -18,4 +18,8 @@ WebDriverWait(driver, timeout=10).until(element_to_be_clickable((By.CSS_SELECTOR
 # at point (192,234) because another element <div id="loader"> obscures it
 WebDriverWait(driver, timeout=10).until(element_to_be_clickable((By.ID, "bigCookie")))
 
+# cookie = driver.find_element(By.ID, value="bigCookie")
+# while True:
+#     cookie.click()
+
 driver.quit()
