@@ -10,6 +10,10 @@ driver = webdriver.Firefox()
 driver.get("https://orteil.dashnet.org/cookieclicker/")
 
 
+# We need to click the accept cookies button, otherwise this bot will
+# not be able to click on products in the 'Buildings' panel.
+WebDriverWait(driver, timeout=10).until(element_to_be_clickable((By.CSS_SELECTOR, ".cc_btn.cc_btn_accept_all"))).click()
+
 # When the browser first opens a prompt will display asking the user for a language preference.
 # However, this prompt does not display immediately. The line below forces selenium to wait
 # (up to 10 secs) for the "English' button to be clickable.
