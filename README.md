@@ -14,3 +14,4 @@ buildings give more cookies per second than lower tiers.
 #### To Do:
 - Access the 'Upgrades' section and if one is available for purchase, always purchase an upgrade
 over an building.
+- Fix unused parameters in check_products function.
