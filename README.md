@@ -8,7 +8,7 @@ A bot powered by selenium web driver which interacts with a Cookie Clicker game.
 5 minutes the number of cookies per second is printed to the console. 
 
 ### Notes
-- My naive approach is to also purchase the highest tier building available, since the higher tier
+- My naive approach is to always purchase the highest tier building available, since the higher tier
 buildings give more cookies per second than lower tiers.
 
 #### To Do:
