@@ -10,12 +10,19 @@ SITE_URL = "https://orteil.dashnet.org/cookieclicker/"
 PRODUCT_CHECK_INTERVAL = timedelta(seconds=5)
 
 
-def check_products(*, web_driver, cookie_count):
+def check_available_purchases(*, web_driver, cookie_count):
     # debugging
     # print('check products executed @', time.asctime())
     # print(current_cookie_count)
 
-    available_products = driver.find_elements(By.CSS_SELECTOR, value=".product.unlocked.enabled")
+    # .find_element (singular) will error if the element does not exist.
+    # We have to use the plural method. It will not error, just returns an empty list.
+    available_upgrades = web_driver.find_elements(By.CSS_SELECTOR, value=".crate.upgrade.enabled")
+    if available_upgrades:
+        # print(available_upgrades[0].get_attribute("id"))
+        available_upgrades[0].click()
+
+    available_products = web_driver.find_elements(By.CSS_SELECTOR, value=".product.unlocked.enabled")
     product_names = []
     # product_prices = []
     for product in available_products:
@@ -25,9 +32,8 @@ def check_products(*, web_driver, cookie_count):
 
     if product_names:
         # print(product_names)
-
         highest_tier_product_available = len(product_names) - 1
-        product_to_buy = driver.find_element(By.ID, value=f"product{highest_tier_product_available}")
+        product_to_buy = web_driver.find_element(By.ID, value=f"product{highest_tier_product_available}")
         # print(product_to_buy.text)
         product_to_buy.click()
 
@@ -59,15 +65,15 @@ prepare_site(driver)
 
 cookie = driver.find_element(By.ID, value="bigCookie")
 timeout = time.time() + (60 * 5)  # 60 sec * 5 =  5 minutes
-last_time_products_checked = datetime.now()
+last_time_purchases_checked = datetime.now()
 
 while time.time() < timeout:
     cookie.click()
     current_cookie_count = int(driver.find_element(By.ID, value="cookies").text.split(" ")[0])
 
-    if last_time_products_checked <= (datetime.now() - PRODUCT_CHECK_INTERVAL):
-        check_products(web_driver=driver, cookie_count=current_cookie_count)
-        last_time_products_checked = datetime.now()
+    if last_time_purchases_checked <= (datetime.now() - PRODUCT_CHECK_INTERVAL):
+        check_available_purchases(web_driver=driver, cookie_count=current_cookie_count)
+        last_time_purchases_checked = datetime.now()
 
 cookies_per_second = driver.find_element(By.ID, value="cookiesPerSecond")
 print(cookies_per_second.text)
